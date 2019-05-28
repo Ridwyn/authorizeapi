@@ -1,4 +1,4 @@
-let clickMe=document.getElementById('clickMe')
+let cardPayment=document.getElementById('cardPayment')
 
 function makeRequest(url,body) {
     let xhr = new XMLHttpRequest();
@@ -17,15 +17,27 @@ function makeRequest(url,body) {
             reject(new TypeError(xhr.responseText || 'Network request failed'))
           }
     })
- 
+
+}
+// serializer
+function formSerialize(formElement) {
+    const values = {};
+    const inputs = formElement.elements;
+
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].type!="submit"){ 
+            values[inputs[i].name] = inputs[i].value;
+        }
+    
+    }
+    return values;
 }
 
-let creditCard=document.getElementById('creditCard')   
 let a =creditCard.value 
  
-       
-clickMe.addEventListener('click',()=>{
-    let chargeCreditCard=                                                                                                                                                                   
+//All Info JSON to charge a credit card i.e customer,ship address etc 
+//Including this INfo would be included in the genrated email sent to the merchane wmail       
+let chargeCreditCard=                                                                                                                                                                   
 {
     // required
     "createTransactionRequest": {
@@ -41,9 +53,10 @@ clickMe.addEventListener('click',()=>{
             "amount": "5",
             "payment": {
                 "creditCard": {
-                    "cardNumber":""+creditCard.value+"",
+                    "cardNumber":"11111222223334",
                     "expirationDate": "2020-12",
-                    "cardCode": "999"
+                    "cardCode": "999",
+                    "fullname":""
                 }
             },
             "lineItems": {
@@ -116,11 +129,50 @@ clickMe.addEventListener('click',()=>{
         }
     }
 }  
-makeRequest("https://apitest.authorize.net/xml/v1/request.api",JSON.stringify(chargeCreditCard))
-.then(response=>{
-    console.log(JSON.parse(response))
-}).catch(error=>{
-    throw error
-})
 
-})
+
+cardPayment.onsubmit=(e)=>{
+    e.preventDefault();
+   let s_form= formSerialize(cardPayment)
+   let chargeCard=
+   {  
+    "createTransactionRequest": {
+    "merchantAuthentication": {
+        "name": "9Lz9CYv658",
+        "transactionKey": "647uMhj3629uDzLR"
+    },
+    "refId": "123456",
+    "transactionRequest": {
+        "transactionType": "authCaptureTransaction",
+        "amount": "5",
+        "payment": {
+            "creditCard": {
+                "cardNumber":`${s_form.cardNumber}`,
+                "expirationDate": `${s_form.expYear +"-"+ s_form.expMonth}`,
+                "cardCode": `${s_form.cvc}`
+            }
+        }
+    }
+    }
+}
+    console.log(chargeCard)
+    makeRequest("https://apitest.authorize.net/xml/v1/request.api",JSON.stringify(chargeCard))
+    .then(response=>{
+        let result=JSON.parse(response)
+        console.log(result)
+        if(result.transactionResponse.responseCode==="1"){
+            document.getElementById("success").innerHTML= `  <div class="jumbotron text-xs-center">
+                <h1 class="display-3">Thank You!</h1>
+                <p class="lead">
+                    <a class="btn btn-primary btn-sm" href="/" role="button">Continue</a>
+                </p>
+                </div>`
+        }
+    }).catch(error=>{
+        throw error
+    })
+}
+
+function successfulHTML(){
+
+}
