@@ -12,20 +12,31 @@
     <title>JSAuthorize</title>
 </head>
 <body>
-  <form class="container p-5" id="cardPayment">
+  <form class="container p-5" id="cardPaymentForm" method="post" action="https://test.authorize.net/payment/payment">
+    	<input type="hidden" name="token" value="" />
+    <div class="row align-content-center">
+      <input class="col-8 py-2 my-2" type="text" name="amount" placeholder="Amount to Charge" id="amount">
+      <button class="col-5 btn btn-primary py-2 my-2"  id="proceed" >Proceed</button>
+    </div>
+  </form>
+  <!-- <form class="container p-5" id="cardPaymentForm" method="post" action="https://test.authorize.net/payment/payment">
+    	<input type="hidden" name="token" value="" />
     <div class="row align-content-center">
       <input class="col-8 py-2 my-2" type="text" name="cardNumber" placeholder="test cards" id="creditCard">
       <input class="col-4 py-2 my-2" type="text" name="cvc" placeholder="cvc" id="cvc">
       <input class="col-4 py-2 my-2" type="text" name="expYear" placeholder="Expiry Year" id="expYear">
       <input class="col-4 mr-auto py-2 my-2" type="text" name="expMonth" placeholder="Expiry Month" id="expMonth">     
       <input class="col-8 py-2 my-2" type="text" name="fullName" placeholder="Name on Card" id="full_name">
-      <button class="col-5 btn btn-primary py-2 my-2" type="submit" id="pay" >Pay</button>
+      <button class="col-5 btn btn-primary py-2 my-2" type="submit" id="pay" >Pay</button> 
     </div>
-  </form>
+  </form> -->
+
 
   <div id="success"></div>
        
-
-<script src="app.js"></script>
+  <!-- Accept.JS Form Library  -->
+  <!-- <script type="text/javascript"  src="https://jstest.authorize.net/v1/Accept.js"  charset="utf-8"></script>
+  <script type="text/javascript"    src="https://jstest.authorize.net/v3/AcceptUI.js"    charset="utf-8"></script> -->
+<script src="token.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-let cardPayment=document.getElementById('cardPayment')
+let cardPaymentForm=document.getElementById('cardPaymentForm')
 
 function makeRequest(url,body) {
     let xhr = new XMLHttpRequest();
@@ -28,7 +28,6 @@ function formSerialize(formElement) {
         if (inputs[i].type!="submit"){ 
             values[inputs[i].name] = inputs[i].value;
         }
-    
     }
     return values;
 }
@@ -131,9 +130,9 @@ let chargeCreditCard=
 }  
 
 
-cardPayment.onsubmit=(e)=>{
+cardPaymentForm.onsubmit=(e)=>{
     e.preventDefault();
-   let s_form= formSerialize(cardPayment)
+   let s_form= formSerialize(cardPaymentForm)
    let chargeCard=
    {  
     "createTransactionRequest": {
@@ -156,6 +155,7 @@ cardPayment.onsubmit=(e)=>{
     }
 }
     console.log(chargeCard)
+
     makeRequest("https://apitest.authorize.net/xml/v1/request.api",JSON.stringify(chargeCard))
     .then(response=>{
         let result=JSON.parse(response)
